@@ -163,3 +163,5 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
+
+webpage/.vscode
