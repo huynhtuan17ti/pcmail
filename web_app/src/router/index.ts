@@ -34,5 +34,18 @@ export default route(function (/* { store, ssrContext } */) {
       process.env.MODE === 'ssr' ? void 0 : process.env.VUE_ROUTER_BASE
     ),
   });
+
+  Router.beforeEach((to, from, next) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    console.log(to.path);
+    if (to.matched.some((record) => record.meta.requireAuth)) {
+      console.log('is login', from.path);
+      next('/');
+    } else {
+      console.log('Yeah');
+      next();
+    }
+  });
+
   return Router;
 });

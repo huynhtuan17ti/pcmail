@@ -164,4 +164,8 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-webpage/.vscode
+web_app/.vscode
+pc_app/.vscode
+
+*.zip
+*.tar
