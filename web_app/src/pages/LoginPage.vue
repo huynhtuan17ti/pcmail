@@ -22,10 +22,13 @@ import { useRouter } from 'vue-router';
 import logo from 'assets/logo.png';
 import smartpc from 'assets/smart-pc.jpg';
 import googleicon from 'assets/google-icon.png';
+import { useUserStore } from 'src/stores/user';
 
 export default defineComponent({
   setup() {
     const router = useRouter();
+    const store = useUserStore();
+    console.log(store);
     return {
       logo,
       smartpc,
@@ -34,9 +37,9 @@ export default defineComponent({
         this.$gAuth
           .signIn()
           .then((googleUser) => {
-            //this.$store.commit('googleUser', googleUser);
+            store.onLogin();
             console.log('googleUser', googleUser);
-            void router.push({ path: '/main' });
+            void router.push({ path: '/home' });
           })
           .catch((error) => {
             console.log('login error', error);

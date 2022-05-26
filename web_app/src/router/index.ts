@@ -6,6 +6,7 @@ import {
   createWebHistory,
 } from 'vue-router';
 import routes from './routes';
+import { useUserStore } from 'src/stores/user';
 
 /*
  * If not building with SSR mode, you can
@@ -22,6 +23,7 @@ export default route(function (/* { store, ssrContext } */) {
     : process.env.VUE_ROUTER_MODE === 'history'
     ? createWebHistory
     : createWebHashHistory;
+  const store = useUserStore();
 
   const Router = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 }),
@@ -37,12 +39,12 @@ export default route(function (/* { store, ssrContext } */) {
 
   Router.beforeEach((to, from, next) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    console.log(to.path);
+    //console.log('FROM: ' + from.path + ', TO: ' + to.path);
+    //console.log(store.getLoginState);
     if (to.matched.some((record) => record.meta.requireAuth)) {
-      console.log('is login', from.path);
-      next('/');
+      if (store.getLoginState) next();
+      else Router.push('/login');
     } else {
-      console.log('Yeah');
       next();
     }
   });

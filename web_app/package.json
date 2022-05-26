@@ -13,11 +13,14 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
+    "pinia": "^2.0.14",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
     "vue-google-oauth2": "^1.5.8",
     "vue-router": "^4.0.0",
-    "vue3-google-oauth2": "^1.0.6"
+    "vue3-google-oauth2": "^1.0.6",
+    "vuex": "^4.0.2",
+    "vuex-smart-module": "^1.0.0"
   },
   "devDependencies": {
     "@quasar/app-webpack": "^3.0.0",
