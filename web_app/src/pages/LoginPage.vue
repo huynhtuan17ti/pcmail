@@ -23,28 +23,27 @@ import logo from 'assets/logo.png';
 import smartpc from 'assets/smart-pc.jpg';
 import googleicon from 'assets/google-icon.png';
 import { useUserStore } from 'src/stores/user';
+import { useGapi } from 'vue-gapi';
 
 export default defineComponent({
   setup() {
     const router = useRouter();
     const store = useUserStore();
-    console.log(store);
+    const gapi = useGapi();
+    function onLogin() {
+      gapi.login().then(({ currentUser, gapi, hasGrantedScopes }) => {
+        console.log({ currentUser, gapi, hasGrantedScopes });
+        // console.log(gapi.client.getToken());
+        // console.log('Login: ' + gapi.client.gmail);
+        store.onLogin();
+        void router.push({ path: '/home' });
+      });
+    }
     return {
       logo,
       smartpc,
       googleicon,
-      onLogin() {
-        this.$gAuth
-          .signIn()
-          .then((googleUser) => {
-            store.onLogin();
-            console.log('googleUser', googleUser);
-            void router.push({ path: '/home' });
-          })
-          .catch((error) => {
-            console.log('login error', error);
-          });
-      },
+      onLogin,
     };
   },
 });
@@ -70,7 +69,7 @@ export default defineComponent({
 }
 
 .logo-circle:hover {
-  border: 8px solid #255262;
+  border: 8px solid #5271ff;
   .logo {
     transform: scale(1.2);
   }

@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "@types/gapi": "^0.0.42",
     "core-js": "^3.6.5",
     "pinia": "^2.0.14",
     "quasar": "^2.6.0",
     "vue": "^3.0.0",
+    "vue-gapi": "^2.1.0",
     "vue-google-oauth2": "^1.5.8",
     "vue-router": "^4.0.0",
     "vue3-google-oauth2": "^1.0.6",
