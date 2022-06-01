@@ -24,16 +24,6 @@ export default defineComponent({
   setup(props) {
     const gapi = useGapi();
 
-    // load gmail API
-    // TODO: this should be a global trigger
-    gapi.getGapiClient().then((gapi) => {
-      gapi.load('client', () => {
-        gapi.client.load('gmail', 'v1', () => {
-          console.log('Loaded Gmail');
-        });
-      });
-    });
-
     // send message here
     function sendMessage(headers_obj, message) {
       var email = '';
@@ -44,14 +34,13 @@ export default defineComponent({
       console.log(email);
 
       gapi.getGapiClient().then((gapi) => {
-        gapi.client.gmail.users.messages
-          .send({
-            userId: 'me',
-            resource: {
-              raw: btoa(email).replace(/\+/g, '-').replace(/\//g, '_'),
-            },
-          })
-          .execute();
+        gapi.client.gmail.users.messages.send({
+          userId: 'me',
+          resource: {
+            raw: btoa(email).replace(/\+/g, '-').replace(/\//g, '_'),
+          },
+        });
+        //.execute();
       });
     }
 
@@ -75,6 +64,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .card {
+  transition: box-shadow 0.3s border 0.3s;
   margin: 10px;
   height: 30vh;
   width: 30vh;
@@ -88,5 +78,9 @@ export default defineComponent({
     margin-top: 20px;
     width: 70%;
   }
+}
+.card:hover {
+  box-shadow: 8px 8px 11px rgba(33, 33, 33, 0.2);
+  border: 3px solid #5ba569;
 }
 </style>

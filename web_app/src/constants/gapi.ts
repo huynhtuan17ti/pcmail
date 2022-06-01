@@ -6,4 +6,4 @@ export const DISCOVERY_DOCS = [
 ];
 
 export const SCOPE =
-  'https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly';
+  'https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.labels';
