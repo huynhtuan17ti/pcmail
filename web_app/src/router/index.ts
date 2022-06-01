@@ -40,7 +40,7 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     //console.log('FROM: ' + from.path + ', TO: ' + to.path);
-    //console.log(store.getLoginState);
+    // console.log(store.getLoginState);
     if (to.matched.some((record) => record.meta.requireAuth)) {
       if (store.getLoginState) next();
       else Router.push('/login');
