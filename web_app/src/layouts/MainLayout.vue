@@ -5,10 +5,17 @@
         <q-img class="logo-bar" :src="logo" />
         <q-toolbar-title class="title"> PCmail </q-toolbar-title>
         <q-btn ounded outline color="blue" class="download-btn">
-          <q-icon name="download" style="margin-right: 10px" />
+          <q-icon name="download" style="margin-right: 10px; cursor: point" />
           Install for your PC
         </q-btn>
-        <q-btn flat round dense icon="logout" style="margin-left: 20px" />
+        <q-btn
+          flat
+          round
+          dense
+          icon="logout"
+          style="margin-left: 20px"
+          @click="onLogout()"
+        />
       </q-toolbar>
       <router-view />
     </q-page-container>
@@ -19,13 +26,26 @@
 import { defineComponent } from 'vue';
 import logo from 'assets/logo_v2.png';
 import downloadicon from 'assets/download-icon.png';
+import { useGapi } from 'vue-gapi';
+import { useUserStore } from 'src/stores/user';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'MainLayout',
   setup() {
+    const gapi = useGapi();
+    const store = useUserStore();
+    const router = useRouter();
+    function onLogout() {
+      gapi.logout().then(() => {
+        store.onLogout();
+        void router.push({ path: '/login' });
+      });
+    }
     return {
       logo,
       downloadicon,
+      onLogout,
     };
   },
 });
