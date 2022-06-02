@@ -3,6 +3,7 @@ import ssl, email, smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from my_utils import finish_and_send
 
 def reply_list_running_app(original_email, USERNAME, PASSWORD):
     ans = ['Running Apps:']
@@ -17,19 +18,8 @@ def reply_list_running_app(original_email, USERNAME, PASSWORD):
     
     rep = MIMEMultipart('mixed')
     rep.attach(MIMEText(ans))
-    rep['Message-ID'] = email.utils.make_msgid()
-    rep['In-Reply-To'] = original_email['Message-ID']
-    rep['Subject'] = 'Re: ' + original_email['Subject']
-    rep['To'] = original_email['Reply-To'] or original_email['From']
-    rep['From'] = USERNAME
 
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as conn:
-        print('Processing ... ', end='')
-        conn.login(USERNAME, PASSWORD)
-        conn.sendmail(USERNAME, rep['To'], rep.as_string())
-        conn.quit()
-        print('Done')
+    finish_and_send(rep, original_email, USERNAME, PASSWORD)
         
 ################################################################################
 
@@ -45,16 +35,5 @@ def reply_stop_app(original_email, USERNAME, PASSWORD, pid):
 
     rep = MIMEMultipart('mixed')
     rep.attach(MIMEText(mess))
-    rep['Message-ID'] = email.utils.make_msgid()
-    rep['In-Reply-To'] = original_email['Message-ID']
-    rep['Subject'] = 'Re: ' + original_email['Subject']
-    rep['To'] = original_email['Reply-To'] or original_email['From']
-    rep['From'] = USERNAME
     
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as conn:
-        print('Processing ... ', end='')
-        conn.login(USERNAME, PASSWORD)
-        conn.sendmail(USERNAME, rep['To'], rep.as_string())
-        conn.quit()
-        print('Done')
+    finish_and_send(rep, original_email, USERNAME, PASSWORD)

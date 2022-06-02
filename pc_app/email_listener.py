@@ -6,10 +6,11 @@ import re
 
 from reply_screenshot import reply_screenshot
 from reply_process import reply_list_running_app, reply_stop_app
+from reply_shutdown_restart import reply_shutdown, reply_restart
 
 USERNAME = 'networkingass20120015@gmail.com'
 PASSWORD = 'DummyPassword123'
-    
+
 if __name__ == '__main__':
     conn = imaplib.IMAP4_SSL('imap.gmail.com')
     
@@ -52,6 +53,10 @@ if __name__ == '__main__':
                             print(pid)
                         except:
                             pass
+                    elif 'shutdown' in body_message:
+                        reply_shutdown(email_message, USERNAME, PASSWORD)
+                    elif 'restart' in body_message:
+                        reply_restart(email_message, USERNAME, PASSWORD)
 
                     retcode, data = conn.store(num, '+FLAGS', '(\\Seen)')
             

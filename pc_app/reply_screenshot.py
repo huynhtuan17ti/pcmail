@@ -8,6 +8,8 @@ from email.mime.text import MIMEText
 
 import pyautogui
 
+from my_utils import finish_and_send
+
 def reply_screenshot(original_email, USERNAME, PASSWORD):
     rep = MIMEMultipart('mixed')
     
@@ -26,17 +28,4 @@ def reply_screenshot(original_email, USERNAME, PASSWORD):
     )
     
     rep.attach(part)
-    
-    rep['Message-ID'] = email.utils.make_msgid()
-    rep['In-Reply-To'] = original_email['Message-ID']
-    rep['Subject'] = 'Re: ' + original_email['Subject']
-    rep['To'] = original_email['Reply-To'] or original_email['From']
-    rep['From'] = USERNAME
-    
-    context = ssl.create_default_context()
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as conn:
-        print('Processing ... ', end='')
-        conn.login(USERNAME, PASSWORD)
-        conn.sendmail(USERNAME, rep['To'], rep.as_string())
-        conn.quit()
-        print('Done')
+    finish_and_send(rep, original_email, USERNAME, PASSWORD)
