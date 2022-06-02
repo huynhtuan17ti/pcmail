@@ -2,8 +2,10 @@ import imaplib
 import email
 import time
 import sys
+import re
 
 from reply_screenshot import reply_screenshot
+from reply_process import reply_list_running_app, reply_stop_app
 
 USERNAME = 'networkingass20120015@gmail.com'
 PASSWORD = 'DummyPassword123'
@@ -41,7 +43,16 @@ if __name__ == '__main__':
                     
                     if 'screenshot' in body_message:
                         reply_screenshot(email_message, USERNAME, PASSWORD)
-                    
+                    elif 'running app' in body_message:
+                        reply_list_running_app(email_message, USERNAME, PASSWORD)
+                    elif 'stop app pid:' in body_message:
+                        try:
+                            pid = int(re.match(r'.*stop app pid: (\d+).*', body_message).group(0))
+                            reply_stop_app(email_message, USERNAME, PASSWORD, pid)
+                            print(pid)
+                        except:
+                            pass
+
                     retcode, data = conn.store(num, '+FLAGS', '(\\Seen)')
             
             time.sleep(5)
