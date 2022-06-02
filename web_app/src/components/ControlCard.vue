@@ -1,5 +1,5 @@
 <template>
-  <q-card class="card" @click="onClick()">
+  <q-card class="card">
     <q-img class="card-image" :src="image"></q-img>
     <q-card-section>
       <div class="text-h6" style="text-align: center">
@@ -11,53 +11,12 @@
 
 <script>
 import { defineComponent } from 'vue';
-import { end_email, subject } from 'src/constants/gmail';
-import { useGapi } from 'vue-gapi';
 
 export default defineComponent({
   name: 'ControlCard',
   props: {
     image: String,
     title: String,
-    message: String,
-  },
-  setup(props) {
-    const gapi = useGapi();
-
-    // send message here
-    function sendMessage(headers_obj, message) {
-      var email = '';
-      for (var header in headers_obj)
-        email += header += ': ' + headers_obj[header] + '\r\n';
-
-      email += '\r\n' + message;
-      console.log(email);
-
-      gapi.getGapiClient().then((gapi) => {
-        gapi.client.gmail.users.messages.send({
-          userId: 'me',
-          resource: {
-            raw: btoa(email).replace(/\+/g, '-').replace(/\//g, '_'),
-          },
-        });
-        //.execute();
-      });
-    }
-
-    function onClick() {
-      sendMessage(
-        {
-          // TODO: change here
-          To: end_email,
-          Subject: subject,
-        },
-        props.message
-      );
-    }
-
-    return {
-      onClick,
-    };
   },
 });
 </script>

@@ -1,20 +1,19 @@
 <template>
   <div class="q-pa-md row">
-    <control-card
-      :image="ExtensionImages['list_process']"
-      :title="message_title['basic']"
-      :message="message['basic']"
-      @click="cardClicking = true"
-    ></control-card>
-    <control-card
-      :image="ExtensionImages['poweroff']"
-      :title="message_title['basic']"
-      :message="message['basic']"
-      @click="cardClicking = true"
-    ></control-card>
+    <div v-for="(name, id) in extensions" :key="id">
+      <control-card
+        :image="extensionImages[name]"
+        :title="message_title[name]"
+        @click="
+          cardClicking = true;
+          gtitle = message_title[name];
+          gmessage = message[name];
+        "
+      ></control-card>
+    </div>
 
     <q-dialog v-model="cardClicking">
-      <dialog-card />
+      <dialog-card :title="gtitle" :message="gmessage" />
     </q-dialog>
   </div>
 </template>
@@ -22,8 +21,8 @@
 <script>
 import { defineComponent, ref } from 'vue';
 import { message_title, message } from 'src/constants/gmail';
-import basic from 'assets/basic.jpg';
-import { ExtensionImages } from 'src/constants/extenstions.ts';
+
+import { extensions, extensionImages } from 'src/constants/extenstions.ts';
 import ControlCard from 'src/components/ControlCard.vue';
 import DialogCard from 'src/components/DialogCard.vue';
 import { useGapi } from 'vue-gapi';
@@ -32,6 +31,15 @@ export default defineComponent({
   name: 'HomePage',
   components: { ControlCard, DialogCard },
   setup() {
+    const gtitle = ref('');
+    const gmessage = ref('');
+
+    // function onCardClick(title, message){
+    //   gtitle.value = title
+    //   gmessage.value = message
+
+    // }
+
     const gapi = useGapi();
     // load gmail API
     // TODO: this should be a global trigger
@@ -43,11 +51,13 @@ export default defineComponent({
       });
     });
     return {
-      basic,
       message,
       message_title,
-      ExtensionImages,
+      extensionImages,
+      extensions,
 
+      gtitle,
+      gmessage,
       cardClicking: ref(false),
     };
   },
