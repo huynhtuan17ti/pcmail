@@ -1,4 +1,4 @@
-export const end_email = 'huynhminhtuan6429@gmail.com';
+export const end_email = 'kkura250802@gmail.com';
 export const subject = '[PCMAIL] Request';
 export const message = {
   basic: 'This is a testing message. No valuable!',
