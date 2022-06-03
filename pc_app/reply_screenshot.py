@@ -14,9 +14,9 @@ def reply_screenshot(original_email, USERNAME, PASSWORD):
     rep = MIMEMultipart('mixed')
     
     my_screenshot = pyautogui.screenshot()
-    my_screenshot.save('reply_image.jpg')
+    my_screenshot.save('reply_image.png')
     
-    with open('reply_image.jpg', 'rb') as attachment:
+    with open('reply_image.png', 'rb') as attachment:
         part = MIMEBase('application', 'octet-stream')
         part.set_payload(attachment.read())
         

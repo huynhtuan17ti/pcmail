@@ -1,58 +1,43 @@
 import cv2
+from email import encoders
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
 
+from my_utils import finish_and_send
 
-# Create an object to read
-# from camera
-video = cv2.VideoCapture(0)
+def reply_camera_capture(original_email, USERNAME, PASSWORD):
+    cap = cv2.VideoCapture(0) 
 
-# We need to check if camera
-# is opened previously or not
-if (video.isOpened() == False):
-    print("Error reading video file")
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH) + 0.5)
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) + 0.5)
 
-# We need to set resolutions.
-# so, convert them from float to integer.
-frame_width = int(video.get(3))
-frame_height = int(video.get(4))
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
+    output = cv2.VideoWriter('reply_video.mp4', fourcc, 20, (width, height))
 
-size = (frame_width, frame_height)
-
-# Below VideoWriter object will create
-# a frame of above defined The output
-# is stored in 'output.avi' file.
-result = cv2.VideoWriter('output.avi',
-                         cv2.VideoWriter_fourcc(*'MJPG'),
-                         10, size)
-
-while(True):
-    ret, frame = video.read()
-
-    if ret == True:
-
-        # Write the frame into the
-        # file 'output.avi'
-        result.write(frame)
-
-        # Display the frame
-        # saved in the file
-        cv2.imshow('Frame', frame)
-
-        # Press S on keyboard
-        # to stop the process
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+    while(cap.isOpened()):
+        try:
+            ret, frame = cap.read()
+            if ret == True:
+                output.write(frame)
+                cv2.waitKey(1)
+        except:
             break
 
-    # Break the loop
-    else:
-        break
+    output.release()
+    cap.release()
+    cv2.destroyAllWindows()
 
-# When everything done, release
-# the video capture and video
-# write objects
-video.release()
-result.release()
-
-# Closes all the frames
-cv2.destroyAllWindows()
-
-print("The video was successfully saved")
+    rep = MIMEMultipart('mixed')
+    with open('reply_video.mp4', 'rb') as attachment:
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload(attachment.read())
+        
+    encoders.encode_base64(part)
+    
+    part.add_header(
+        'Content-Disposition',
+        f'attachment; filename= reply_video.mp4',
+    )
+    
+    rep.attach(part)
+    finish_and_send(rep, original_email, USERNAME, PASSWORD)

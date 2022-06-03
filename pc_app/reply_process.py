@@ -1,5 +1,4 @@
 import psutil
-import ssl, email, smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -24,7 +23,6 @@ def reply_list_running_app(original_email, USERNAME, PASSWORD):
 ################################################################################
 
 def reply_stop_app(original_email, USERNAME, PASSWORD, pid):
-    print('adu cai nay hay vl')
     try:
         proc = psutil.Process(pid)
         process_name = proc.name()
