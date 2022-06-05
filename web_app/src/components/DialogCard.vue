@@ -2,13 +2,7 @@
   <q-card style="width: 700px; max-width: 700px">
     <q-toolbar>
       <q-avatar>
-        <q-icon
-          name="mail_outline"
-          color="green"
-          size="2rem"
-          style="cursor: pointer"
-          @click="onClickSendMessage()"
-        />
+        <q-icon name="sports_esports" color="primary" size="2.3rem" />
       </q-avatar>
       <q-toolbar-title
         ><span class="text-weight-bold">Controller </span
@@ -22,17 +16,45 @@
       </div>
       <q-separator />
       <div style="margin-top: 10px; font-size: 12pt">
-        <q-icon name="send" color="blue" />
-        {{ replyMessage }}
+        <q-icon name="task_alt" color="green" size="1.5rem" />
+        {{ statusMessage }}
       </div>
+      <q-input
+        v-show="sending_format != undefined && !isSend"
+        v-model="inputMessage"
+        label="Request text"
+        :placeholder="sending_format"
+      />
     </q-card-section>
     <div style="text-align: center; padding: 10px">
+      <q-linear-progress
+        query
+        color="cyan"
+        size="20px"
+        style="margin-bottom: 20px"
+        v-show="isSend && emailLink === undefined"
+      >
+        <div class="text-black" style="font-size: 10pt">
+          Waiting for response
+        </div>
+      </q-linear-progress>
+      <q-btn
+        color="primary"
+        icon-right="outgoing_mail"
+        label="Send your email"
+        :disable="isSend"
+        style="margin-right: 20px"
+        @click="
+          onClickSendMessage();
+          isSend = true;
+        "
+      />
       <q-btn
         color="primary"
         icon-right="mark_email_unread"
-        label="Watch your email"
+        label="Watch response email"
         :disable="emailLink === undefined"
-        @click="onEmailBtnClick"
+        @click="onShowEmailBtnClick"
       />
     </div>
   </q-card>
@@ -54,11 +76,9 @@ export default defineComponent({
   props: {
     title: String,
     message: String,
+    sending_format: String,
   },
   setup(props) {
-    const replyMessage = ref(
-      'Please click the icon mail to commit this action!'
-    );
     const gapi = useGapi();
 
     // -----------------------------------------------------------
@@ -69,7 +89,7 @@ export default defineComponent({
         email += header += ': ' + headers_obj[header] + '\r\n';
 
       email += '\r\n' + message;
-      console.log(email);
+      //console.log(email);
       gapi.getGapiClient().then((gapi) => {
         gapi.client.gmail.users.messages
           .send({
@@ -95,63 +115,69 @@ export default defineComponent({
           })
           .then(async (response) => {
             //console.log('[#] Response:');
-            var message = response.result.messages[0];
-            //console.log(message.id);
-            await gapi.client.gmail.users.messages
-              .get({
-                userId: 'me',
-                id: message.id,
-                format: 'full',
-              })
-              .then((mail) => {
-                data = mail.result;
-                //console.log(data);
-              });
+            try {
+              var message = response.result.messages[0];
+              //console.log(message.id);
+              await gapi.client.gmail.users.messages
+                .get({
+                  userId: 'me',
+                  id: message.id,
+                  format: 'full',
+                })
+                .then((mail) => {
+                  data = mail.result;
+                  //console.log(data);
+                });
+            } catch (err) {}
           });
       });
       return data;
     }
 
-    // get the current sending message
-    // async function getIdSentMessage() {
-    //   console.log('get sending message!');
-    //   var sent_message = await getMessage('in:sent');
-    //   return sent_message.threadId;
-    // }
     // -----------------------------------------------------------
     const emailLink = ref(undefined);
+    const isSend = ref(false);
+    const statusMessage = ref(
+      'Please click the icon mail to commit this action!'
+    );
+    const inputMessage = ref('');
+
     async function onClickSendMessage() {
       sendMessage(
         {
           To: end_email,
           Subject: subject,
         },
-        props.message
+        props.message + inputMessage.value
       );
-      replyMessage.value = 'Sent! Please wait until your PC reply.';
-      // delay 20s waiting for response
+      statusMessage.value = 'Sent! Please wait until your PC reply.';
+      // delay 30s waiting for response
       var data = await sleep(
         getMessageData,
-        20000,
+        30000,
         'from:' + end_email + ' subject:' + subject
       );
-      var message = findMessage(data.payload);
-      replyMessage.value = message;
+      try {
+        var message = findMessage(data.payload);
+        statusMessage.value = 'Last message from your PC: ' + message;
 
-      console.log(data.payload);
+        //console.log(data.payload);
 
-      if (findAttachmentId(data.payload) !== undefined)
-        replyMessage.value =
-          'Found an attachment in the reply! Please click the email icon below to see!';
+        if (findAttachmentId(data.payload) !== undefined)
+          statusMessage.value =
+            'Found an attachment in the reply! Please click the button below to see!';
 
-      var messageId = findMessageId(data);
+        var messageId = findMessageId(data);
 
-      var link = INBOX_URL + messageId;
-      console.log(link);
-      emailLink.value = link;
+        var link = INBOX_URL + messageId;
+        emailLink.value = link;
+      } catch (err) {
+        statusMessage.value =
+          'Last message from your PC: Not found any message!';
+      }
     }
 
-    function onEmailBtnClick() {
+    function onShowEmailBtnClick() {
       window.open(
         emailLink.value,
         '_blank' // <- This is what makes it open in a new window.
@@ -159,10 +185,13 @@ export default defineComponent({
     }
 
     return {
-      replyMessage,
+      statusMessage,
+      inputMessage,
       onClickSendMessage,
+      isSend,
       emailLink,
-      onEmailBtnClick,
+      onShowEmailBtnClick,
+      sendMessage,
     };
   },
 });

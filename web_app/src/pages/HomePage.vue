@@ -6,21 +6,24 @@
         :title="message_title[name]"
         @click="
           cardClicking = true;
-          gtitle = message_title[name];
-          gmessage = message[name];
+          controller = name;
         "
       ></control-card>
     </div>
 
     <q-dialog v-model="cardClicking">
-      <dialog-card :title="gtitle" :message="gmessage" />
+      <dialog-card
+        :title="message_title[controller]"
+        :message="message[controller]"
+        :sending_format="sending_format[controller]"
+      />
     </q-dialog>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref } from 'vue';
-import { message_title, message } from 'src/constants/gmail';
+import { message_title, message, sending_format } from 'src/constants/gmail';
 
 import { extensions, extensionImages } from 'src/constants/extenstions.ts';
 import ControlCard from 'src/components/ControlCard.vue';
@@ -31,14 +34,7 @@ export default defineComponent({
   name: 'HomePage',
   components: { ControlCard, DialogCard },
   setup() {
-    const gtitle = ref('');
-    const gmessage = ref('');
-
-    // function onCardClick(title, message){
-    //   gtitle.value = title
-    //   gmessage.value = message
-
-    // }
+    const controller = ref('');
 
     const gapi = useGapi();
     // load gmail API
@@ -53,11 +49,11 @@ export default defineComponent({
     return {
       message,
       message_title,
+      sending_format,
       extensionImages,
       extensions,
 
-      gtitle,
-      gmessage,
+      controller,
       cardClicking: ref(false),
     };
   },
