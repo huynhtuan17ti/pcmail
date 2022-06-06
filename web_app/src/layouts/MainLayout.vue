@@ -4,6 +4,24 @@
       <q-toolbar class="text-primary top-bar">
         <q-img class="logo-bar" :src="logo" />
         <q-toolbar-title class="title"> PCmail </q-toolbar-title>
+
+        <q-btn
+          dense
+          flat
+          icon="outgoing_mail"
+          size="25px"
+          style="margin: 5px"
+          @click="onHome"
+        />
+        <q-btn
+          dense
+          flat
+          icon="help"
+          size="25px"
+          style="margin-right: 30px"
+          @click="onHelp"
+        />
+
         <q-btn ounded outline color="blue" class="download-btn">
           <q-icon name="download" style="margin-right: 10px; cursor: point" />
           Install for your PC
@@ -42,10 +60,18 @@ export default defineComponent({
         void router.push({ path: '/login' });
       });
     }
+    function onHome() {
+      void router.push({ path: '/home' });
+    }
+    function onHelp() {
+      void router.push({ path: '/help' });
+    }
     return {
       logo,
       downloadicon,
       onLogout,
+      onHome,
+      onHelp,
     };
   },
 });

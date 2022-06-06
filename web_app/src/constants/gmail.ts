@@ -1,7 +1,7 @@
 export const end_email = 'networkingass20120015@gmail.com';
 export const subject = '[PCMAIL] Request';
 export const message = {
-  basic: 'This is a testing message. No valuable!',
+  basic: 'TEST MESSAGE',
   shutdown: 'SHUTDOWN',
   restart: 'RESTART',
   list_process: 'LIST PROCESSES',
@@ -32,4 +32,27 @@ export const sending_format = {
   webcam: null,
   screenshot: null,
   copy: 'path_to_A path_to_B',
+};
+
+export const detail = {
+  basic: 'Sending a testing message.',
+  shutdown: 'Shutdown your computer.',
+  restart: 'Restart your computer.',
+  list_process:
+    'List all apps and processes that are running on your computer.',
+  kill_process: 'Kill a process or an app via a process id',
+  webcam: 'Video capture by webcam of your computer',
+  screenshot: 'Capture desktop screen of your computer',
+  copy: 'Copy a file to other directory',
+};
+
+export const response = {
+  basic: null,
+  shutdown: 'Success or Fail',
+  restart: 'Success or Fail',
+  list_process: 'A list with process id',
+  kill_process: 'Success or Fail',
+  webcam: 'Success or Fail',
+  screenshot: 'Success or Fail',
+  copy: 'Success or Fail',
 };

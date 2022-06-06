@@ -138,7 +138,7 @@ export default defineComponent({
     const emailLink = ref(undefined);
     const isSend = ref(false);
     const statusMessage = ref(
-      'Please click the icon mail to commit this action!'
+      'Please fill the request (if has) and click button below to commit this action!'
     );
     const inputMessage = ref('');
 
