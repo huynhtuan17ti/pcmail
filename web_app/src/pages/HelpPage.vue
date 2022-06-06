@@ -3,7 +3,6 @@
     <q-table
       title="Help table"
       bordered
-      virtual-scroll="false"
       :rows="rows"
       :columns="columns"
       row-key="name"
@@ -69,7 +68,6 @@ export default defineComponent({
           response: response[controller_name],
         });
       }
-      console.log(row_array);
       return row_array;
     });
 

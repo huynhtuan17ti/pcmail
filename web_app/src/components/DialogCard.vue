@@ -64,13 +64,14 @@
 import { defineComponent, ref } from 'vue';
 import { subject, end_email } from 'src/constants/gmail';
 import { INBOX_URL } from 'src/constants/gapi';
-import { useGapi } from 'vue-gapi';
 import {
   findMessage,
   findAttachmentId,
   findMessageId,
 } from 'src/helpers/content';
-import { sleep } from 'src/helpers/sleep';
+import { sendMessage, waitResponse } from 'src/helpers/gmail';
+//import { sleep } from 'src/helpers/sleep';
+import { useGapi } from 'vue-gapi';
 
 export default defineComponent({
   props: {
@@ -80,61 +81,6 @@ export default defineComponent({
   },
   setup(props) {
     const gapi = useGapi();
-
-    // -----------------------------------------------------------
-    // send message here
-    function sendMessage(headers_obj, message) {
-      var email = '';
-      for (var header in headers_obj)
-        email += header += ': ' + headers_obj[header] + '\r\n';
-
-      email += '\r\n' + message;
-      //console.log(email);
-      gapi.getGapiClient().then((gapi) => {
-        gapi.client.gmail.users.messages
-          .send({
-            userId: 'me',
-            resource: {
-              raw: btoa(email).replace(/\+/g, '-').replace(/\//g, '_'),
-            },
-          })
-          .execute();
-      });
-    }
-
-    async function getMessageData(filter) {
-      var data = undefined;
-      await gapi.getGapiClient().then(async (gapi) => {
-        await gapi.client.gmail.users.messages
-          .list({
-            maxResults: 1,
-            userId: 'me',
-            format: 'full',
-            // TODO: must have from: and to: filter
-            q: filter,
-          })
-          .then(async (response) => {
-            //console.log('[#] Response:');
-            try {
-              var message = response.result.messages[0];
-              //console.log(message.id);
-              await gapi.client.gmail.users.messages
-                .get({
-                  userId: 'me',
-                  id: message.id,
-                  format: 'full',
-                })
-                .then((mail) => {
-                  data = mail.result;
-                  //console.log(data);
-                });
-            } catch (err) {}
-          });
-      });
-      return data;
-    }
-
-    // -----------------------------------------------------------
     const emailLink = ref(undefined);
     const isSend = ref(false);
     const statusMessage = ref(
@@ -143,20 +89,21 @@ export default defineComponent({
     const inputMessage = ref('');
 
     async function onClickSendMessage() {
-      sendMessage(
+      var sentData = await sendMessage(
+        gapi,
         {
           To: end_email,
           Subject: subject,
         },
         props.message + inputMessage.value
       );
+      console.log(sentData);
+
       statusMessage.value = 'Sent! Please wait until your PC reply.';
-      // delay 30s waiting for response
-      var data = await sleep(
-        getMessageData,
-        30000,
-        'from:' + end_email + ' subject:' + subject
-      );
+
+      var data = await waitResponse(gapi, sentData.threadId);
+      console.log(data);
+
       try {
         var message = findMessage(data.payload);
         statusMessage.value = 'Last message from your PC: ' + message;
@@ -173,7 +120,7 @@ export default defineComponent({
         emailLink.value = link;
       } catch (err) {
         statusMessage.value =
-          'Last message from your PC: Not found any message!';
+          'Last message from your PC: Not found any response!';
       }
     }
 
