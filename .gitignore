@@ -169,3 +169,5 @@ pc_app/.vscode
 
 *.zip
 *.tar
+pc_app/reply_video.mp4
+pc_app/reply_image.png
