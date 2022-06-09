@@ -10,17 +10,19 @@ from reply_process import reply_list_running_app, reply_stop_app
 from reply_pressed_key import reply_pressed_key
 from reply_camera_capture import reply_camera_capture
 from reply_copy_file import reply_copy_file
-from reply_registry import reply_modify_reg
+#from reply_registry import reply_modify_reg
 
 USERNAME = 'networkingass20120015@gmail.com'
-PASSWORD = 'DummyPassword123'
+PASSWORD = 'rrsdrqjjwudklnjx'
 
 if __name__ == '__main__':
     conn = imaplib.IMAP4_SSL('imap.gmail.com')
     
     try:
         retcode, capabilities = conn.login(USERNAME, PASSWORD)
-    except:
+    except Exception as e:
+        print(e)
+        print('ngu vl')
         sys.exit(1)
     
     try:
@@ -41,18 +43,18 @@ if __name__ == '__main__':
                         if elem.get_content_type() == 'text/plain' or elem.get_content_type() == 'text/html':
                             body_message = elem.get_payload(decode=True).decode()
                             break
-                    
-                    body_message = body_message.lower()
+                
                     
                     print(body_message)
+                    body_message = body_message.strip()
                     
-                    if 'screenshot' in body_message:
+                    if 'SCREENSHOT' == body_message:
                         reply_screenshot(email_message, USERNAME, PASSWORD)
-                    elif 'running app' in body_message:
+                    elif 'LIST PROCESSES' == body_message:
                         reply_list_running_app(email_message, USERNAME, PASSWORD)
-                    elif 'stop app pid ' in body_message:
+                    elif 'KILL ' in body_message:
                         try:
-                            pid = int(re.match(r'.*stop app pid (\d+).*', body_message).group(0))
+                            pid = int(re.match(r'KILL (\d+)', body_message).group(0))
                             reply_stop_app(email_message, USERNAME, PASSWORD, pid)
                             print(pid)
                         except:
@@ -74,12 +76,14 @@ if __name__ == '__main__':
                         
                         if pos + 2 < len(ls):
                             reply_copy_file(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2])
-                    elif 'reg':
+                    elif 'reg' in body_message:
+                        pass
                         ls = body_message.split()
-                        pos = ls.index('reg')
+                        pos = -1
                         
                         if pos + 3 < len(ls):
-                            reply_modify_reg(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2], ls[pos + 3])
+                            pass
+                            #reply_modify_reg(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2], ls[pos + 3])
                         
                         
                     retcode, data = conn.store(num, '+FLAGS', '(\\Seen)')
