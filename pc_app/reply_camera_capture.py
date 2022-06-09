@@ -1,3 +1,4 @@
+import time
 import cv2
 from email import encoders
 from email.mime.multipart import MIMEMultipart
@@ -13,8 +14,12 @@ def reply_camera_capture(original_email, USERNAME, PASSWORD):
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
     output = cv2.VideoWriter('reply_video.mp4', fourcc, 20, (width, height))
-
+    
+    start_time = time.time()
+    
     while(cap.isOpened()):
+        if time.time() - start_time > 25:
+            break    
         try:
             ret, frame = cap.read()
             if ret == True:

