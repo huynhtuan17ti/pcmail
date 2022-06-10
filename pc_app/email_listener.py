@@ -86,7 +86,7 @@ if __name__ == '__main__':
                     elif 'REG' in body_message:
                         pass
                         ls = body_message.split()
-                        pos = -1
+                        pos = ls.index('REG')
                         
                         if pos + 3 < len(ls):
                             pass
