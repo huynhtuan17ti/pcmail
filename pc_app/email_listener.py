@@ -70,7 +70,7 @@ if __name__ == '__main__':
                     elif 'SHUTDOWN' in body_message:
                         #pass
                         reply_shutdown(email_message, USERNAME, PASSWORD)
-                    elif 'RESET' in body_message:
+                    elif 'RESTART' in body_message:
                         #pass
                         reply_restart(email_message, USERNAME, PASSWORD)
                     elif 'CATCH KEYBOARD' in body_message:
