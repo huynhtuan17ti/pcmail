@@ -2,20 +2,24 @@ import psutil
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from tabulate import tabulate
+import pandas as pd
+
 from my_utils import finish_and_send
 
 def reply_list_running_app(original_email, USERNAME, PASSWORD):
-    print('vo ham roi nay')
-    ans = ['Running Apps:']
+    ans = {'Pid' : [], 'Name' : []}
     for proc in psutil.process_iter():
         try:
             process_name = proc.name()
             process_id = proc.pid
         except(psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
-        ans.append('{:<20} {:<20}'.format('Pid: ' + str(process_id), 'Name: ' + process_name))
-    ans = '\n'.join(ans)
-    
+        ans['Pid'].append(process_id)
+        ans['Name'].append(process_name)
+
+    df = pd.DataFrame(ans)
+    ans = tabulate(df, headers = 'keys', tablefmt = 'fancy_grid')
     rep = MIMEMultipart('mixed')
     rep.attach(MIMEText(ans))
 

@@ -1,9 +1,12 @@
 import { boot } from 'quasar/wrappers';
-import GAuth from 'vue3-google-oauth2';
+import VueGapi from 'vue-gapi';
+import { API_KEY, CLIENT_ID, DISCOVERY_DOCS, SCOPE } from 'src/constants/gapi';
+//import GAuth from 'vue3-google-oauth2';
 const gauthOption = {
-  clientId:
-    '67393825355-aseggp161v49soh8vo33d7gq5dltpaie.apps.googleusercontent.com',
-  scope: 'profile email',
+  apiKey: API_KEY,
+  clientId: CLIENT_ID,
+  discoveryDocs: DISCOVERY_DOCS,
+  scope: SCOPE,
   prompt: 'consent',
   // https://stackoverflow.com/a/72197117
   plugin_name: 'pcmail',
@@ -11,5 +14,5 @@ const gauthOption = {
 };
 
 export default boot(({ app }) => {
-  app.use(GAuth, gauthOption);
+  app.use(VueGapi, gauthOption);
 });

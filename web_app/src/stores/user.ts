@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore('userStore', {
   state: () => ({
-    isLogin: false,
+    isLogin: !!localStorage.getItem('token'),
   }),
 
   getters: {
@@ -14,9 +14,11 @@ export const useUserStore = defineStore('userStore', {
   actions: {
     onLogin() {
       this.isLogin = true;
+      localStorage.setItem('token', 'JWT');
     },
     onLogout() {
       this.isLogin = false;
+      localStorage.removeItem('token');
     },
   },
 });
