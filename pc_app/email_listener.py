@@ -79,7 +79,7 @@ if __name__ == '__main__':
                     elif 'COPY' in body_message:
                         # Kinda lazy let just do this for now
                         ls = body_message.split()
-                        pos = ls.index('copy')
+                        pos = ls.index('COPY')
                         
                         if pos + 2 < len(ls):
                             reply_copy_file(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2])
