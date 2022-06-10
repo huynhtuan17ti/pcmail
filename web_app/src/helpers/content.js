@@ -12,7 +12,13 @@ export function findMessage(content) {
       .replace(/\s/g, '');
     //console.log(encodedBody);
     message = atob(encodedBody); // decoder
-    message = message.split('\n')[0]; // only return the first message
+    var lines = message.split('\n');
+    console.log(lines);
+    if (lines.length > 6) {
+      message = '';
+      for (var i = 0; i < 6; i++) message += lines[i] + '\n';
+      message += ' ... Open response email to read in full.';
+    }
   }
   return message;
 }
@@ -22,7 +28,7 @@ export function findAttachmentId(content) {
   if ('attachmentId' in content.body) {
     id = content.body.attachmentId;
   } else {
-    for (var partId = 0; partId <= 1; partId++) {
+    for (var partId = 0; partId < content.parts.length; partId++) {
       if ('attachmentId' in content.parts[partId].body) {
         id = content.parts[partId].body.attachmentId;
         break;

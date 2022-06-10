@@ -6,16 +6,19 @@ import test from 'assets/test.png';
 import restart from 'assets/restart.png';
 import kill_process from 'assets/kill_process.png';
 import folder from 'assets/folder.jpg';
+import keyboard from 'assets/keyboard.jpg';
+import system from 'assets/system.jpg';
 
 export const extensions = [
-  'basic',
   'shutdown',
+  'restart',
   'list_process',
+  'kill_process',
   'screenshot',
   'webcam',
-  'restart',
-  'kill_process',
+  'keyboard',
   'copy',
+  'registry',
 ];
 
 export const extensionImages = {
@@ -27,4 +30,6 @@ export const extensionImages = {
   webcam: video,
   restart: restart,
   copy: folder,
+  keyboard: keyboard,
+  registry: system,
 };

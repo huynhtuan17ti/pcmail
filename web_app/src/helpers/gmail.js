@@ -78,16 +78,16 @@ export const waitResponse = async (Gapi, threadID) => {
   return await new Promise((resolve) => {
     const interval = setInterval(async () => {
       var response = await getThreadLastMessage(Gapi, threadID);
-      console.log(time + ': ' + response);
+      //console.log(time + ': ' + response);
       time += 1;
-      if (time == 30) {
+      if (time == 20) {
         return undefined;
       }
       if (response !== undefined) {
         resolve(response);
         clearInterval(interval);
-        console.log('Done!');
+        //console.log('Done!');
       }
-    }, 3000);
+    }, 5000);
   });
 };

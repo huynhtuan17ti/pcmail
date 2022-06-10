@@ -17,8 +17,16 @@
       <q-separator />
       <div style="margin-top: 10px; font-size: 12pt">
         <q-icon name="task_alt" color="green" size="1.5rem" />
-        {{ statusMessage }}
+        Last message from your PC:
       </div>
+      <q-input
+        v-if="statusMessage.length > 0"
+        v-model="statusMessage"
+        outlined
+        type="textarea"
+        :readonly="true"
+        style="margin-top: 10px"
+      ></q-input>
       <q-input
         v-show="sending_format != undefined && !isSend"
         v-model="inputMessage"
@@ -97,16 +105,16 @@ export default defineComponent({
         },
         props.message + inputMessage.value
       );
-      console.log(sentData);
+      //console.log(sentData);
 
       statusMessage.value = 'Sent! Please wait until your PC reply.';
 
       var data = await waitResponse(gapi, sentData.threadId);
-      console.log(data);
 
       try {
         var message = findMessage(data.payload);
-        statusMessage.value = 'Last message from your PC: ' + message;
+        //console.log(message);
+        statusMessage.value = message;
 
         //console.log(data.payload);
 
@@ -119,8 +127,8 @@ export default defineComponent({
         var link = INBOX_URL + messageId;
         emailLink.value = link;
       } catch (err) {
-        statusMessage.value =
-          'Last message from your PC: Not found any response!';
+        console.log(err);
+        statusMessage.value = 'Not found any response!';
       }
     }
 

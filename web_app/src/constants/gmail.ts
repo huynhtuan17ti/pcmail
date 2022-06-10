@@ -9,7 +9,8 @@ export const message = {
   webcam: 'VIDEO',
   screenshot: 'SCREENSHOT',
   copy: 'COPY ',
-  // TODO: add more, based on pc_app
+  keyboard: 'CATCH KEYBOARD',
+  registry: 'REG',
 };
 
 export const message_title = {
@@ -21,6 +22,8 @@ export const message_title = {
   webcam: 'Capture webcam',
   screenshot: 'Screenshot',
   copy: 'Copy file',
+  keyboard: 'Catch keyboard',
+  registry: 'Update entry in registry',
 };
 
 export const sending_format = {
@@ -28,10 +31,12 @@ export const sending_format = {
   shutdown: null,
   restart: null,
   list_process: null,
-  kill_process: 'process_id',
+  kill_process: '[process_id]',
   webcam: null,
   screenshot: null,
-  copy: 'path_to_A path_to_B',
+  copy: '[path_to_A] [path_to_B]',
+  keyboard: null,
+  registry: '[path] [entry_name] [entry_value]',
 };
 
 export const detail = {
@@ -44,6 +49,8 @@ export const detail = {
   webcam: 'Video capture by webcam of your computer',
   screenshot: 'Capture desktop screen of your computer',
   copy: 'Copy a file to other directory',
+  keyboard: 'Catch your keyboard',
+  registry: 'Update one entry in your PC registry',
 };
 
 export const response = {
@@ -55,4 +62,6 @@ export const response = {
   webcam: 'Success or Fail',
   screenshot: 'Success or Fail',
   copy: 'Success or Fail',
+  keyboard: 'A list of catched key',
+  registry: 'Success or Fail',
 };
