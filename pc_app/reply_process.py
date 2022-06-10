@@ -5,6 +5,7 @@ from email.mime.text import MIMEText
 from my_utils import finish_and_send
 
 def reply_list_running_app(original_email, USERNAME, PASSWORD):
+    print('vo ham roi nay')
     ans = ['Running Apps:']
     for proc in psutil.process_iter():
         try:
