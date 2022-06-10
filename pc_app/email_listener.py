@@ -18,13 +18,15 @@ USERNAME = 'networkingass20120015@gmail.com'
 PASSWORD = 'rrsdrqjjwudklnjx'
 
 if __name__ == '__main__':
+    ui.getAllMail()
+    
+    print(ui.mailList)
+    
     conn = imaplib.IMAP4_SSL('imap.gmail.com')
     
     try:
         retcode, capabilities = conn.login(USERNAME, PASSWORD)
     except Exception as e:
-        print(e)
-        print('ngu vl')
         sys.exit(1)
     
     try:
@@ -39,9 +41,11 @@ if __name__ == '__main__':
                     
                     email_message = email.message_from_bytes(bytes_data)
                     
-                    print(email_message['From'])
+                    sender = email.utils.parseaddr(email_message['From'])[1]
                     
-                    if email_message['From'] not in ui.mailList:
+                    print(sender)
+                    
+                    if sender not in ui.mailList:
                         continue
                     
                     body_message = ''
