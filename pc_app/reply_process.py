@@ -21,9 +21,6 @@ def reply_list_running_app(original_email, USERNAME, PASSWORD):
     df = pd.DataFrame(ans)
     ans = tabulate(df, headers = 'keys', tablefmt = 'html')
     
-    print(ans)
-    # exit(0)
-    
     rep = MIMEMultipart('mixed')
     rep.attach(MIMEText(ans, 'html'))
 
@@ -44,6 +41,3 @@ def reply_stop_app(original_email, USERNAME, PASSWORD, pid):
     rep.attach(MIMEText(mess))
     
     finish_and_send(rep, original_email, USERNAME, PASSWORD)
-    
-if __name__ == '__main__':
-    reply_list_running_app('a', 'a', 'a')
