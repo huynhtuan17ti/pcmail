@@ -1,8 +1,4 @@
-<h1> <img src="design/images/PCMAIL_no_text.png"
-  width="120"
-  height="120"
-  style="float:left;">
-# PCmail
+#PCmail
 
 <p align="center">
   <img src="design/images/PCMAIL.png" alt="PC mail"/>
