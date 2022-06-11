@@ -13,7 +13,7 @@ def reply_camera_capture(original_email, USERNAME, PASSWORD):
     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) + 0.5)
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v') 
-    output = cv2.VideoWriter('reply_video.mp4', fourcc, 20, (width, height))
+    output = cv2.VideoWriter('./data/reply_video.mp4', fourcc, 20, (width, height))
     
     start_time = time.time()
     
@@ -33,7 +33,7 @@ def reply_camera_capture(original_email, USERNAME, PASSWORD):
     cv2.destroyAllWindows()
 
     rep = MIMEMultipart('mixed')
-    with open('reply_video.mp4', 'rb') as attachment:
+    with open('./data/reply_video.mp4', 'rb') as attachment:
         part = MIMEBase('application', 'octet-stream')
         part.set_payload(attachment.read())
         

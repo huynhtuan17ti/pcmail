@@ -11,14 +11,12 @@ import pyautogui
 from my_utils import finish_and_send
 
 def reply_screenshot(original_email, USERNAME, PASSWORD):
-    print('vo ham roi nay')
     rep = MIMEMultipart('mixed')
     
     my_screenshot = pyautogui.screenshot()
-    my_screenshot.save('reply_image.png')
+    my_screenshot.save('./data/reply_image.png')
     
-    print('cai nay xong roi nay')
-    with open('reply_image.png', 'rb') as attachment:
+    with open('./data/reply_image.png', 'rb') as attachment:
         part = MIMEBase('application', 'octet-stream')
         part.set_payload(attachment.read())
         
@@ -30,6 +28,5 @@ def reply_screenshot(original_email, USERNAME, PASSWORD):
     )
     
     rep.attach(part)
-    print('bat dau gui nay ...')
 
     finish_and_send(rep, original_email, USERNAME, PASSWORD)

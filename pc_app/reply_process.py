@@ -2,22 +2,27 @@ import psutil
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+import pandas as pd
+from pretty_html_table import build_table
+
 from my_utils import finish_and_send
 
 def reply_list_running_app(original_email, USERNAME, PASSWORD):
-    print('vo ham roi nay')
-    ans = ['Running Apps:']
+    ans = {'Pid' : [], 'Name' : []}
     for proc in psutil.process_iter():
         try:
             process_name = proc.name()
             process_id = proc.pid
         except(psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             pass
-        ans.append('{:<20} {:<20}'.format('Pid: ' + str(process_id), 'Name: ' + process_name))
-    ans = '\n'.join(ans)
+        ans['Pid'].append(process_id)
+        ans['Name'].append(process_name)
+
+    df = pd.DataFrame(ans)
+    ans = build_table(df, 'blue_light')
     
     rep = MIMEMultipart('mixed')
-    rep.attach(MIMEText(ans))
+    rep.attach(MIMEText(ans, 'html'))
 
     finish_and_send(rep, original_email, USERNAME, PASSWORD)
         
