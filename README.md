@@ -4,13 +4,13 @@
   <img src="design/images/PCMAIL.png" alt="PC mail"/>
 </p>
 
-### Overview
+## Overview
 PC controller app via gmail.
 
-### System diagram
+## System diagram
 ![](design/illustration/system_diagram.png)
 
-### Technologies Index
+## Technologies Index
 #### 1. Website
 **Frameworks**  
 ```
