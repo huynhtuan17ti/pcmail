@@ -1,7 +1,7 @@
 # PCmail
 
 <p align="center">
-  <img src="design/images/PCMAIL.png" alt="PC mail"/>
+  <img src="design/images/PCMAIL.png" alt="PC mail" style="border-radius:50%"/>
 </p>
 
 ## Overview

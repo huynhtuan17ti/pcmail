@@ -12,7 +12,7 @@ from reply_camera_capture import reply_camera_capture
 from reply_copy_file import reply_copy_file
 from reply_registry import reply_modify_reg
 
-import ui
+import config as ui
 
 USERNAME = 'networkingass20120015@gmail.com'
 PASSWORD = '<NONE>'
