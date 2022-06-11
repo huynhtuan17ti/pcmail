@@ -10,7 +10,7 @@ export const message = {
   screenshot: 'SCREENSHOT',
   copy: 'COPY ',
   keyboard: 'CATCH KEYBOARD',
-  registry: 'REG',
+  registry: 'REG ',
 };
 
 export const message_title = {
@@ -34,7 +34,7 @@ export const sending_format = {
   kill_process: '[process_id]',
   webcam: null,
   screenshot: null,
-  copy: '[path_to_A] [path_to_B]',
+  copy: '[source] [dest]',
   keyboard: null,
   registry: '[path] [entry_name] [entry_value]',
 };
@@ -59,8 +59,8 @@ export const response = {
   restart: 'Success or Fail',
   list_process: 'A list with process id',
   kill_process: 'Success or Fail',
-  webcam: 'Success or Fail',
-  screenshot: 'Success or Fail',
+  webcam: 'A capture video',
+  screenshot: 'Screenshot image',
   copy: 'Success or Fail',
   keyboard: 'A list of catched key',
   registry: 'Success or Fail',

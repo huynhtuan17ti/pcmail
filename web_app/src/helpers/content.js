@@ -13,10 +13,10 @@ export function findMessage(content) {
     //console.log(encodedBody);
     message = atob(encodedBody); // decoder
     var lines = message.split('\n');
-    console.log(lines);
-    if (lines.length > 6) {
+    //console.log(lines);
+    if (lines.length > 10) {
       message = '';
-      for (var i = 0; i < 6; i++) message += lines[i] + '\n';
+      for (var i = 0; i < 10; i++) message += lines[i] + '\n';
       message += ' ... Open response email to read in full.';
     }
   }
