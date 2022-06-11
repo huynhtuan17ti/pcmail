@@ -1,4 +1,4 @@
-#PCmail
+# PCmail
 
 <p align="center">
   <img src="design/images/PCMAIL.png" alt="PC mail"/>
