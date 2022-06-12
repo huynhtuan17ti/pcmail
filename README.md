@@ -26,7 +26,7 @@ Our system provides several control operations:
 ### 2. Main screen
 ![](design/images/main_screen.png)
 
-### 3. Controller diaglog
+### 3. Controller dialog
 ![](design/images/control_dialog.png)
 
 ### 4. Help table
@@ -63,3 +63,5 @@ winreg
 ```
 Python
 ```
+## About us
+We are students from [HCMUS](https://www.hcmus.edu.vn/).
